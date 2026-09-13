@@ -2,6 +2,7 @@
 const CONFIG = {
   name: "jx4r",
   uid: "1421349735003983925",
+  adminKey: "jx4r", // open yoursite/?admin=jx4r for the private view graph
   typing: ["my corner of the internet", "discord.gg/...", "est. 2026"],
   links: [
     {
@@ -9,6 +10,12 @@ const CONFIG = {
       sub: "click to copy uid",
       icon: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="#5c94ff" d="M19.6 5.1A16.4 16.4 0 0 0 15.5 4l-.5 1a15 15 0 0 0-3.7 0L10.8 4a16.4 16.4 0 0 0-4.1 1.2C3.4 10 2.5 14.7 3 19.3A16.5 16.5 0 0 0 8 22l1.2-2h-1.5l-.4-.5 2.4-1 1 2.5c.5.1 1 .2 1.6.2h1.4c.6 0 1.1-.1 1.6-.2l1-2.5 2.4 1-.4.5h-1.5L17 22a16.5 16.5 0 0 0 5-2.7c.6-5.3-.7-9.9-2.4-14.2zM8.7 15.3c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2zm6.6 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2z"/></svg>',
       action: "copy-uid",
+    },
+    {
+      label: "Add me on Discord",
+      sub: "opens my profile",
+      icon: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="#5c94ff" d="M15 12a1 1 0 0 0-1 1v3.5a.5.5 0 0 0 1 0V13a1 1 0 0 0 0-1zm-5 0a1 1 0 0 0-1 1v3.5a.5.5 0 0 0 1 0V13a1 1 0 0 0 0-1zm7-8H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h4l-1.5-2.5h-2A1.5 1.5 0 0 1 6 17V7a1.5 1.5 0 0 1 1.5-1.5h9A1.5 1.5 0 0 1 18 7v10a1.5 1.5 0 0 1-1.5 1.5h-2L13 21h4a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3z"/></svg>',
+      action: "https://discord.com/users/1421349735003983925",
     },
     {
       label: "Share this page",
@@ -115,6 +122,7 @@ async function syncPresence() {
       if (g) act = esc(g.details ? `${g.name} — ${g.details}` : g.name);
     }
     setPresence(d.discord_status || "offline", act);
+    renderActivity(d);
   } catch {
     /* offline / blocked — static fallback stays */
   }
@@ -238,6 +246,14 @@ async function bumpViews() {
     } catch { n = already ? 0 : 1; }
     total = VIEWS.base + n;
   }
+  // per-day stats (powers the private ?admin graph, unique per browser/day)
+  try {
+    const today = new Date().toISOString().slice(0, 10);
+    if (localStorage.getItem("jx4r_day") !== today) {
+      const v = await abHit(`views-${today}`);
+      if (v !== null) localStorage.setItem("jx4r_day", today);
+    }
+  } catch { /* ignore */ }
   animateCount(total);
 }
 // count when the overlay is dismissed (observer covers all paths)
@@ -248,6 +264,149 @@ function elFallbackCount() {
     if ($("#enter").classList.contains("hide")) bumpViews();
   }).observe($("#enter"), { attributes: true, attributeFilter: ["class"] });
 }
+
+/* abacus helpers (global counter backend) */
+async function abCall(path, init) {
+  const r = await fetch(`https://abacus.jasoncameron.dev${path}`, init);
+  if (!r.ok && r.status !== 404) throw new Error("abacus " + r.status);
+  return r;
+}
+async function abHit(key) {
+  let r = await abCall(`/v1/hit/${VIEWS.ns}/${key}`);
+  if (r.status === 404) {
+    await abCall("/v1/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ namespace: VIEWS.ns, key }),
+    });
+    r = await abCall(`/v1/hit/${VIEWS.ns}/${key}`);
+  }
+  const j = await r.json();
+  return typeof j.value === "number" ? j.value : null;
+}
+async function abInfo(key) {
+  try {
+    const r = await abCall(`/v1/info/${VIEWS.ns}/${key}`);
+    if (r.status === 404) return 0;
+    const j = await r.json();
+    return typeof j.value === "number" ? j.value : 0;
+  } catch {
+    return null;
+  }
+}
+
+/* live activity card: game art + elapsed, spotify art + moving progress */
+let actMode = null, actStart = 0, actEnd = 0;
+function renderActivity(d) {
+  const sec = document.getElementById("activity");
+  const art = document.getElementById("actArt");
+  const type = document.getElementById("actType");
+  const nm = document.getElementById("actName");
+  const det = document.getElementById("actDetail");
+  if (!sec || !art) return;
+  let show = false;
+  if (d.listening_to_spotify && d.spotify) {
+    const s = d.spotify;
+    art.src = s.album_art_url;
+    art.style.display = "";
+    type.textContent = "listening to spotify";
+    nm.textContent = s.song;
+    det.textContent = `${s.artist} — ${s.album}`;
+    actMode = "prog";
+    actStart = s.timestamps.start;
+    actEnd = s.timestamps.end;
+    show = true;
+  } else {
+    const g = (d.activities || []).find((a) => a.type === 0);
+    if (g) {
+      if (g.assets && g.assets.large_image && !g.assets.large_image.startsWith("mp:") && g.application_id) {
+        art.src = `https://cdn.discordapp.com/app-assets/${g.application_id}/${g.assets.large_image}.png?size=256`;
+        art.style.display = "";
+      } else {
+        art.style.display = "none";
+      }
+      type.textContent = "playing";
+      nm.textContent = g.name;
+      det.textContent = [g.details, g.state].filter(Boolean).join(" — ");
+      actMode = "elapsed";
+      actStart = (g.timestamps && g.timestamps.start) || Date.now();
+      actEnd = 0;
+      show = true;
+    }
+  }
+  sec.hidden = !show;
+  if (show) tickActivity();
+}
+function fmt(ms) {
+  const s = Math.max(0, Math.floor(ms / 1000));
+  const m = Math.floor(s / 60), h = Math.floor(m / 60);
+  return (h ? h + ":" + String(m % 60).padStart(2, "0") : String(m)) + ":" + String(s % 60).padStart(2, "0");
+}
+function tickActivity() {
+  const sec = document.getElementById("activity");
+  const prog = document.getElementById("actProg");
+  const tm = document.getElementById("actTime");
+  if (!prog || !tm || !sec || sec.hidden) return;
+  const now = Date.now();
+  if (actMode === "prog" && actEnd > actStart) {
+    const p = Math.min(1, Math.max(0, (now - actStart) / (actEnd - actStart)));
+    prog.style.width = (p * 100).toFixed(1) + "%";
+    tm.textContent = `${fmt(now - actStart)} / ${fmt(actEnd - actStart)}`;
+  } else {
+    prog.style.width = "100%";
+    tm.textContent = fmt(now - actStart) + " elapsed";
+  }
+}
+setInterval(tickActivity, 1000);
+
+/* visitor themes (saved per browser) */
+(() => {
+  let saved = null;
+  try {
+    saved = localStorage.getItem("jx4r_theme");
+  } catch { /* ignore */ }
+  function apply(t) {
+    document.body.dataset.theme = t;
+    try {
+      localStorage.setItem("jx4r_theme", t);
+    } catch { /* ignore */ }
+    document.querySelectorAll("#themes button").forEach((b) => b.classList.toggle("on", b.dataset.t === t));
+  }
+  document.getElementById("themes").addEventListener("click", (e) => {
+    const b = e.target.closest("button");
+    if (b) apply(b.dataset.t);
+  });
+  apply(saved || "storm");
+})();
+
+/* private admin analytics (?admin=key) */
+async function renderAdmin() {
+  let q = null;
+  try {
+    q = new URLSearchParams(location.search).get("admin");
+  } catch { /* ignore */ }
+  if (q !== CONFIG.adminKey) return;
+  const panel = document.getElementById("admin");
+  if (!panel) return;
+  panel.hidden = false;
+  const days = [];
+  for (let i = 13; i >= 0; i--) {
+    days.push(new Date(Date.now() - i * 864e5).toISOString().slice(0, 10));
+  }
+  const vals = await Promise.all(days.map((day) => abInfo(`views-${day}`)));
+  const nums = vals.map((v) => (v === null ? 0 : v));
+  const max = Math.max(1, ...nums);
+  document.getElementById("adminBars").innerHTML = nums
+    .map(
+      (v, i) =>
+        `<div class="abar" title="${days[i]} — ${v} unique"><div style="height:${Math.max(2, Math.round((v / max) * 100))}%"></div><span>${days[i].slice(5)}</span></div>`
+    )
+    .join("");
+  const t = await abInfo(VIEWS.key);
+  document.getElementById("adminTotal").textContent =
+    `total ${((t === null ? 0 : t) + VIEWS.base).toLocaleString()} views • 14-day unique graph`;
+}
+renderAdmin();
 
 /* 3D tilt + spotlight (guns.lol-style interactivity) */
 (() => {

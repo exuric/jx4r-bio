@@ -28,6 +28,11 @@
 <div class="bg-tint" aria-hidden="true"></div>
 <canvas id="snow" aria-hidden="true"></canvas>
 <div id="flash" aria-hidden="true"></div>
+<div class="themes" id="themes" role="group" aria-label="page theme">
+  <button data-t="storm" class="on" title="midnight storm"></button>
+  <button data-t="blood" title="blood moon"></button>
+  <button data-t="ice" title="ice"></button>
+</div>
 
 <main class="wrap">
   <div class="card">
@@ -51,6 +56,17 @@
       </span>
     </div>
 
+    <section id="activity" class="activity" hidden>
+      <img id="actArt" alt="" />
+      <div class="act-info">
+        <div class="act-type" id="actType">playing</div>
+        <div class="act-name" id="actName">—</div>
+        <div class="act-detail" id="actDetail"></div>
+        <div class="bar"><div id="actProg"></div></div>
+        <div class="act-time" id="actTime"></div>
+      </div>
+    </section>
+
     <nav class="links" id="links"></nav>
 
     <div class="meta">
@@ -65,6 +81,11 @@
 
 </main>
 
+<section id="admin" class="admin" hidden>
+  <h2>views — last 14 days</h2>
+  <div id="adminBars" class="bars"></div>
+  <div id="adminTotal" class="admin-total"></div>
+</section>
 <div class="cursor" aria-hidden="true"></div>
 <div class="cursor-ring" aria-hidden="true"></div>
 <div id="toast"></div>
