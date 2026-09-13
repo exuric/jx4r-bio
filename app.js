@@ -11,12 +11,6 @@ const CONFIG = {
       action: "copy-uid",
     },
     {
-      label: "GitHub",
-      sub: "github.com/exuric",
-      icon: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="#eef3ff" d="M12 2A10 10 0 0 0 2 12c0 4.4 2.9 8.2 6.8 9.5.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.2-3.4-1.2-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.2-4.6-1.1-4.6-4.9 0-1.1.4-2 1-2.7-.1-.2-.4-1.2.1-2.6 0 0 .8-.3 2.7 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.6.6.7 1 1.6 1 2.7 0 3.8-2.4 4.7-4.6 4.9.4.3.8 1 .8 2v3c0 .3.2.6.7.5A10 10 0 0 0 22 12 10 10 0 0 0 12 2z"/></svg>',
-      action: "https://github.com/exuric",
-    },
-    {
       label: "Share this page",
       sub: "copy link",
       icon: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="#9fd0ff" d="M13 5.5A3.5 3.5 0 0 0 8.5 7L5 10.5A3.5 3.5 0 0 0 10 15.5l2-2M11 18.5a3.5 3.5 0 0 0 4.5-1.5l3.5-3.5a3.5 3.5 0 0 0-5-5l-2 2" stroke="#9fd0ff" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',
@@ -162,6 +156,47 @@ function elFallbackCount() {
     if ($("#enter").classList.contains("hide")) bumpViews();
   }).observe($("#enter"), { attributes: true, attributeFilter: ["class"] });
 }
+
+/* 3D tilt + spotlight (guns.lol-style interactivity) */
+(() => {
+  const card = document.querySelector(".card");
+  const fine = matchMedia("(hover: hover) and (pointer: fine)").matches;
+  if (!card || !fine) return;
+  const strength = 9;
+  document.querySelector(".wrap").addEventListener("mousemove", (e) => {
+    const r = card.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    card.style.transition = "transform 0.06s linear";
+    card.style.transform = `rotateY(${px * strength}deg) rotateX(${-py * strength}deg)`;
+    card.style.setProperty("--mx", `${(px + 0.5) * 100}%`);
+    card.style.setProperty("--my", `${(py + 0.5) * 100}%`);
+  });
+  document.querySelector(".wrap").addEventListener("mouseleave", () => {
+    card.style.transition = "transform 0.4s ease";
+    card.style.transform = "rotateY(0deg) rotateX(0deg)";
+  });
+})();
+
+/* smooth crosshair cursor */
+(() => {
+  const dot = document.querySelector(".cursor");
+  const ring = document.querySelector(".cursor-ring");
+  if (!dot || !ring) return;
+  if (!matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+  let mx = -100, my = -100, rx = -100, ry = -100;
+  addEventListener("mousemove", (e) => {
+    mx = e.clientX;
+    my = e.clientY;
+  });
+  (function loop() {
+    rx += (mx - rx) * 0.16;
+    ry += (my - ry) * 0.16;
+    dot.style.transform = `translate(${mx - 11}px, ${my - 11}px)`;
+    ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+    requestAnimationFrame(loop);
+  })();
+})();
 
 /* snowfall */
 (() => {

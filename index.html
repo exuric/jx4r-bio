@@ -19,7 +19,6 @@
 <!-- click to enter -->
 <div id="enter">
   <div class="enter-box">
-    <div class="enter-brand">aim.lol</div>
     <div class="enter-btn">click to enter</div>
   </div>
 </div>
@@ -32,7 +31,9 @@
 <main class="wrap">
   <div class="card">
     <div class="avatar-ring">
-      <img id="avatar" src="./avatar.png" alt="jx4r avatar" />
+      <a href="https://discord.com/users/1421349735003983925" target="_blank" rel="noopener" title="open discord profile">
+        <img id="avatar" src="./avatar.png" alt="jx4r avatar" />
+      </a>
       <span class="status" title="online"></span>
     </div>
 
@@ -41,17 +42,9 @@
     <div class="typed"><span id="typed"></span><span class="caret">▍</span></div>
 
     <div class="badges">
-      <span class="badge" title="owner">
-        <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M12 1.8 19.2 4.6v6.1c0 4.9-3.2 8.1-7.2 9.5-4-1.4-7.2-4.6-7.2-9.5V4.6L12 1.8z"/></svg>
-        owner
-      </span>
       <span class="badge" title="developer">
         <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="m8.7 6.7-5 5 5 5 1.4-1.4-3.6-3.6 3.6-3.6L8.7 6.7zm6.6 0-1.4 1.4 3.6 3.6-3.6 3.6 1.4 1.4 5-5-5-5z"/></svg>
         dev
-      </span>
-      <span class="badge" title="booster">
-        <svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M13 2 4.5 13.5H11L9.5 22 19 10h-6.5L13 2z"/></svg>
-        boost
       </span>
     </div>
 
@@ -67,9 +60,10 @@
     </div>
   </div>
 
-  <footer class="foot">aim.lol — not affiliated with guns.lol</footer>
 </main>
 
+<div class="cursor" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"></div>
 <div id="toast"></div>
 <script src="./app.js"></script>
 </body>
