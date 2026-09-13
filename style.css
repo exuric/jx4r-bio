@@ -203,6 +203,7 @@ body[data-status="offline"] { --ring: #4a5064; }
 .presence .st-idle { color: #f0b232; }
 .presence .st-dnd { color: #da373c; }
 .presence .st-offline { color: #80848e; }
+.cemoji { width: 16px; height: 16px; vertical-align: -3px; }
 
 .typed {
   margin-top: 10px;

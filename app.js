@@ -97,13 +97,24 @@ async function syncPresence() {
         deco.style.display = "none";
       }
     }
+    const acts = d.activities || [];
+    const custom = acts.find((a) => a.type === 4);
     let act = "";
-    if (d.listening_to_spotify && d.spotify) act = `${d.spotify.song} — ${d.spotify.artist}`;
-    else {
-      const g = (d.activities || []).find((a) => a.type === 0);
-      if (g) act = g.name;
+    if (custom && (custom.state || (custom.emoji && custom.emoji.name))) {
+      let emo = "";
+      if (custom.emoji) {
+        emo = custom.emoji.id
+          ? `<img class="cemoji" src="https://cdn.discordapp.com/emojis/${custom.emoji.id}.webp?size=44" alt=""> `
+          : esc(custom.emoji.name) + " ";
+      }
+      act = `${emo}${esc(custom.state || "")}`.trim();
+    } else if (d.listening_to_spotify && d.spotify) {
+      act = esc(`${d.spotify.song} — ${d.spotify.artist}`);
+    } else {
+      const g = acts.find((a) => a.type === 0);
+      if (g) act = esc(g.details ? `${g.name} — ${g.details}` : g.name);
     }
-    setPresence(d.discord_status || "offline", act ? esc(act) : "");
+    setPresence(d.discord_status || "offline", act);
   } catch {
     /* offline / blocked — static fallback stays */
   }
@@ -187,29 +198,47 @@ let counted = false;
 async function bumpViews() {
   if (counted) return;
   counted = true;
-  const el = $("#viewCount");
+  const HIT = `https://abacus.jasoncameron.dev/v1/hit/${VIEWS.ns}/${VIEWS.key}`;
+  const INFO = `https://abacus.jasoncameron.dev/v1/info/${VIEWS.ns}/${VIEWS.key}`;
+  let total = null;
+  // same person = don't count twice (one count per browser)
+  let already = false;
   try {
-    const hit = `${"https://abacus.jasoncameron.dev"}/v1/hit/${VIEWS.ns}/${VIEWS.key}`;
-    let r = await fetch(hit);
-    if (r.status === 404) {
-      await fetch("https://abacus.jasoncameron.dev/v1/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ namespace: VIEWS.ns, key: VIEWS.key }),
-      });
-      r = await fetch(hit);
+    already = localStorage.getItem("jx4r_counted") === "1";
+  } catch { /* private mode */ }
+  try {
+    let r;
+    if (already) {
+      r = await fetch(INFO); // read-only, no increment
+    } else {
+      r = await fetch(HIT);
+      if (r.status === 404) {
+        await fetch("https://abacus.jasoncameron.dev/v1/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ namespace: VIEWS.ns, key: VIEWS.key }),
+        });
+        r = await fetch(HIT);
+      }
+      try {
+        localStorage.setItem("jx4r_counted", "1");
+      } catch { /* private mode */ }
     }
     const j = await r.json();
-    animateCount(VIEWS.base + (j.value || 0));
-  } catch {
+    if (typeof j.value === "number") total = VIEWS.base + j.value;
+  } catch { /* api down — fallback below */ }
+  if (total === null) {
     let n = 0;
     try {
       n = parseInt(localStorage.getItem("jx4r_views") || "0", 10) || 0;
-      n += 1;
-      localStorage.setItem("jx4r_views", String(n));
-    } catch { n = 1; }
-    animateCount(VIEWS.base + n);
+      if (!already) {
+        n += 1;
+        localStorage.setItem("jx4r_views", String(n));
+      }
+    } catch { n = already ? 0 : 1; }
+    total = VIEWS.base + n;
   }
+  animateCount(total);
 }
 // count when the overlay is dismissed (observer covers all paths)
 elFallbackCount();
