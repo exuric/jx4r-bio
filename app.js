@@ -28,7 +28,7 @@ const CONFIG = {
 
 /* view counter: starts at BASE, +1 per real visit (global via Abacus,
    per-browser fallback if offline). change BASE to whatever you want. */
-const VIEWS = { base: 2804, ns: "jx4r-bio-v1", key: "views" };
+const VIEWS = { base: 3608, ns: "jx4r-bio-v1", key: "views" };
 
 /* ================= logic (no need to touch) ================= */
 const $ = (s) => document.querySelector(s);
