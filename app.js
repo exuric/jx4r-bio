@@ -7,21 +7,15 @@ const CONFIG = {
   typing: ["my corner of the internet", "discord.gg/...", "est. 2026"],
   links: [
     {
-      label: "Discord — @jx4r",
-      sub: "click to copy uid",
-      icon: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="#5c94ff" d="M19.6 5.1A16.4 16.4 0 0 0 15.5 4l-.5 1a15 15 0 0 0-3.7 0L10.8 4a16.4 16.4 0 0 0-4.1 1.2C3.4 10 2.5 14.7 3 19.3A16.5 16.5 0 0 0 8 22l1.2-2h-1.5l-.4-.5 2.4-1 1 2.5c.5.1 1 .2 1.6.2h1.4c.6 0 1.1-.1 1.6-.2l1-2.5 2.4 1-.4.5h-1.5L17 22a16.5 16.5 0 0 0 5-2.7c.6-5.3-.7-9.9-2.4-14.2zM8.7 15.3c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2zm6.6 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2z"/></svg>',
-      action: "copy-uid",
-    },
-    {
-      label: "Add me on Discord",
-      sub: "opens my profile",
-      icon: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="#5c94ff" d="M15 12a1 1 0 0 0-1 1v3.5a.5.5 0 0 0 1 0V13a1 1 0 0 0 0-1zm-5 0a1 1 0 0 0-1 1v3.5a.5.5 0 0 0 1 0V13a1 1 0 0 0 0-1zm7-8H7a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h4l-1.5-2.5h-2A1.5 1.5 0 0 1 6 17V7a1.5 1.5 0 0 1 1.5-1.5h9A1.5 1.5 0 0 1 18 7v10a1.5 1.5 0 0 1-1.5 1.5h-2L13 21h4a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3z"/></svg>',
+      label: "Discord",
+      sub: "open in discord",
+      icon: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="#5c94ff" d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.319 13.58.099 18.058a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.363 1.225 1.993a.076.076 0 0 0 .084.029 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>',
       action: "https://discord.com/users/1421349735003983925",
     },
     {
       label: "Share this page",
       sub: "copy link",
-      icon: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="#9fd0ff" d="M13 5.5A3.5 3.5 0 0 0 8.5 7L5 10.5A3.5 3.5 0 0 0 10 15.5l2-2M11 18.5a3.5 3.5 0 0 0 4.5-1.5l3.5-3.5a3.5 3.5 0 0 0-5-5l-2 2" stroke="#9fd0ff" stroke-width="2" fill="none" stroke-linecap="round"/></svg>',
+      icon: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#9fd0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>',
       action: "share",
     },
   ],
@@ -151,15 +145,7 @@ CONFIG.links.forEach((l) => {
   }
   a.innerHTML = `${l.icon}<span>${l.label}<br><small style="color:var(--dim);font-size:12px">${l.sub || ""}</small></span><span class="go">↗</span>`;
   a.addEventListener("click", async (e) => {
-    if (l.action === "copy-uid") {
-      e.preventDefault();
-      try {
-        await navigator.clipboard.writeText(CONFIG.uid);
-        toast("discord uid copied");
-      } catch {
-        toast(CONFIG.uid);
-      }
-    } else if (l.action === "share") {
+    if (l.action === "share") {
       e.preventDefault();
       try {
         await navigator.clipboard.writeText(location.href);
@@ -447,6 +433,51 @@ renderAdmin();
     ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
     requestAnimationFrame(loop);
   })();
+})();
+
+/* glass music player — Trust Issues, Drake (official 30s preview, loops) */
+(() => {
+  const audio = document.getElementById("track");
+  const player = document.getElementById("player");
+  const toggle = document.getElementById("pToggle");
+  const prog = document.getElementById("pProg");
+  const art = document.getElementById("pArt");
+  if (!audio || !player || !toggle) return;
+  const ICON_PLAY = '<svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>';
+  const ICON_PAUSE = '<svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+  let playing = false;
+  function render() {
+    toggle.innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
+    if (art) art.classList.toggle("spin", playing);
+  }
+  async function play() {
+    try {
+      await audio.play();
+    } catch {
+      /* autoplay blocked — user hits play */
+    }
+  }
+  toggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (playing) audio.pause();
+    else play();
+  });
+  audio.addEventListener("play", () => {
+    playing = true;
+    render();
+  });
+  audio.addEventListener("pause", () => {
+    playing = false;
+    render();
+  });
+  audio.addEventListener("timeupdate", () => {
+    if (audio.duration && prog) prog.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
+  });
+  document.getElementById("enter").addEventListener("click", () => {
+    player.hidden = false;
+    play(); // entering counts as a gesture, so autoplay is allowed
+  });
+  render();
 })();
 
 /* heavy rain + distant lightning */
