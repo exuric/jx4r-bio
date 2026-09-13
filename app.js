@@ -42,9 +42,14 @@ function toast(msg) {
 }
 
 /* enter overlay */
-$("#enter").addEventListener("click", () => {
+function dismissEnter() {
+  if ($("#enter").classList.contains("hide")) return;
   $("#enter").classList.add("hide");
   bumpViews();
+}
+$("#enter").addEventListener("click", dismissEnter);
+addEventListener("keydown", (e) => {
+  if (e.key === "Enter" || e.key === " ") dismissEnter();
 });
 
 /* uid copy */
@@ -99,9 +104,9 @@ async function syncPresence() {
     if (deco) {
       if (asset) {
         deco.src = `https://cdn.discordapp.com/avatar-decoration-presets/${asset}.png?size=256`;
-        deco.style.display = "";
+        deco.hidden = false;
       } else {
-        deco.style.display = "none";
+        deco.hidden = true;
       }
     }
     const acts = d.activities || [];
@@ -307,14 +312,15 @@ function renderActivity(d) {
   let show = false;
   if (d.listening_to_spotify && d.spotify) {
     const s = d.spotify;
+    const ts = s.timestamps || { start: Date.now(), end: Date.now() };
     art.src = s.album_art_url;
     art.style.display = "";
     type.textContent = "listening to spotify";
     nm.textContent = s.song;
     det.textContent = `${s.artist} — ${s.album}`;
     actMode = "prog";
-    actStart = s.timestamps.start;
-    actEnd = s.timestamps.end;
+    actStart = ts.start;
+    actEnd = ts.end;
     show = true;
   } else {
     const g = (d.activities || []).find((a) => a.type === 0);
@@ -351,7 +357,8 @@ function tickActivity() {
   if (actMode === "prog" && actEnd > actStart) {
     const p = Math.min(1, Math.max(0, (now - actStart) / (actEnd - actStart)));
     prog.style.width = (p * 100).toFixed(1) + "%";
-    tm.textContent = `${fmt(now - actStart)} / ${fmt(actEnd - actStart)}`;
+    const shown = Math.min(now, actEnd);
+    tm.textContent = `${fmt(shown - actStart)} / ${fmt(actEnd - actStart)}`;
   } else {
     prog.style.width = "100%";
     tm.textContent = fmt(now - actStart) + " elapsed";
@@ -416,8 +423,8 @@ renderAdmin();
   const strength = 9;
   document.querySelector(".wrap").addEventListener("mousemove", (e) => {
     const r = card.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width - 0.5;
-    const py = (e.clientY - r.top) / r.height - 0.5;
+    const px = Math.max(-0.5, Math.min(0.5, (e.clientX - r.left) / r.width - 0.5));
+    const py = Math.max(-0.5, Math.min(0.5, (e.clientY - r.top) / r.height - 0.5));
     card.style.transition = "transform 0.06s linear";
     card.style.transform = `rotateY(${px * strength}deg) rotateX(${-py * strength}deg)`;
     card.style.setProperty("--mx", `${(px + 0.5) * 100}%`);

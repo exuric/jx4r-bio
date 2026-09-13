@@ -32,11 +32,6 @@ body {
 }
 #enter.hide { opacity: 0; pointer-events: none; }
 .enter-box { text-align: center; }
-.enter-brand {
-  font-family: "Unbounded", sans-serif;
-  font-size: 13px; letter-spacing: 0.5em; text-indent: 0.5em;
-  color: var(--dim); margin-bottom: 18px;
-}
 .enter-btn {
   font-family: "Unbounded", sans-serif;
   font-size: 20px; font-weight: 600;
@@ -118,7 +113,7 @@ body {
   text-align: center;
   backdrop-filter: blur(12px);
   box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6), 0 0 60px rgba(47, 123, 255, 0.08);
-  animation: rise 0.8s ease both;
+  animation: rise 0.8s ease backwards;
   transform-style: preserve-3d;
   will-change: transform;
   transition: transform 0.25s ease;
@@ -151,6 +146,7 @@ body {
 @keyframes spin { to { transform: rotate(360deg); } }
 #avatar {
   position: relative;
+  display: block;
   width: 118px; height: 118px;
   border-radius: 50%;
   object-fit: cover;
@@ -258,12 +254,6 @@ body[data-status="offline"] { --ring: #4a5064; }
 .views { display: inline-flex; align-items: center; gap: 6px; }
 .views b { color: var(--txt); font-variant-numeric: tabular-nums; }
 .dot { opacity: 0.5; }
-
-.foot {
-  margin-top: 18px;
-  font-size: 12px; color: var(--dim); opacity: 0.7;
-  letter-spacing: 0.06em;
-}
 
 /* ---------- visitor themes ---------- */
 body[data-theme="blood"] {
