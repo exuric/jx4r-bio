@@ -1,4 +1,4 @@
-# jx4r-bio — personal bio page (guns.lol-style, own brand: aim.lol)
+# jx4r-bio — personal bio page (guns.lol-style)
 
 Single-file-ish static site: `index.html` + `style.css` + `app.js` + `avatar.png` + `bg.png`.
 
@@ -10,13 +10,18 @@ view counter needs http/https for the API call.)
 
 ## Customize
 
-- **Avatar:** replace `avatar.png` with your real Discord avatar
-  (right-click it in Discord → Save Image As → overwrite `avatar.png`).
-  Current one is a placeholder.
+- **Avatar:** live from Discord via Lanyard (auto). `avatar.png`/`deco.png`
+  are offline fallbacks.
 - **Links / bio lines:** edit `CONFIG` at the top of `app.js`.
-- **View base:** `VIEWS.base` in `app.js` (currently 2804). Counts +1 per visit,
-  stored globally via the free Abacus counter API, per-browser localStorage
-  fallback when offline/API down.
+- **View base:** `VIEWS.base` in `app.js` (currently 3608). Unique per
+  browser; global totals need the worker below.
+
+## Global view counter (optional, free)
+
+Browsers block the old free counter API (CORS), so global counts run on
+your own Cloudflare Worker + KV — see `worker.js` header for the 5-step
+dashboard deploy, then set `CONFIG.counterApi` in `app.js` to the worker
+URL. Without it the page counts per-browser (still unique-guarded).
 
 ## Push to GitHub (private, on exuric)
 

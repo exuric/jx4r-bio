@@ -3,6 +3,7 @@ const CONFIG = {
   name: "jx4r",
   uid: "1421349735003983925",
   adminKey: "jx4r", // open yoursite/?admin=jx4r for the private view graph
+  counterApi: "", // global counts: paste your worker URL, e.g. https://jx4r-bio.YOU.workers.dev (see worker.js). empty = per-browser counts.
   typing: ["my corner of the internet", "discord.gg/...", "est. 2026"],
   links: [
     {
@@ -26,8 +27,9 @@ const CONFIG = {
   ],
 };
 
-/* view counter: starts at BASE, +1 per real visit (global via Abacus,
-   per-browser fallback if offline). change BASE to whatever you want. */
+/* view counter: starts at BASE, +1 per unique visitor.
+   Global counts need CONFIG.counterApi (your free Cloudflare Worker,
+   see worker.js). Without it, counts are per-browser via localStorage. */
 const VIEWS = { base: 3608, ns: "jx4r-bio-v1", key: "views" };
 
 /* ================= logic (no need to touch) ================= */
@@ -211,8 +213,6 @@ let counted = false;
 async function bumpViews() {
   if (counted) return;
   counted = true;
-  const HIT = `https://abacus.jasoncameron.dev/v1/hit/${VIEWS.ns}/${VIEWS.key}`;
-  const INFO = `https://abacus.jasoncameron.dev/v1/info/${VIEWS.ns}/${VIEWS.key}`;
   let total = null;
   // same person = don't count twice (one count per browser)
   let already = false;
@@ -220,26 +220,17 @@ async function bumpViews() {
     already = localStorage.getItem("jx4r_counted") === "1";
   } catch { /* private mode */ }
   try {
-    let r;
+    let v;
     if (already) {
-      r = await fetch(INFO); // read-only, no increment
+      v = await abInfo(VIEWS.key); // read-only, no increment
     } else {
-      r = await fetch(HIT);
-      if (r.status === 404) {
-        await fetch("https://abacus.jasoncameron.dev/v1/create", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ namespace: VIEWS.ns, key: VIEWS.key }),
-        });
-        r = await fetch(HIT);
-      }
+      v = await abHit(VIEWS.key);
       try {
         localStorage.setItem("jx4r_counted", "1");
       } catch { /* private mode */ }
     }
-    const j = await r.json();
-    if (typeof j.value === "number") total = VIEWS.base + j.value;
-  } catch { /* api down — fallback below */ }
+    if (typeof v === "number") total = VIEWS.base + v;
+  } catch { /* backend down — fallback below */ }
   if (total === null) {
     let n = 0;
     try {
@@ -270,34 +261,36 @@ function elFallbackCount() {
   }).observe($("#enter"), { attributes: true, attributeFilter: ["class"] });
 }
 
-/* abacus helpers (global counter backend) */
-async function abCall(path, init) {
-  const r = await fetch(`https://abacus.jasoncameron.dev${path}`, init);
-  if (!r.ok && r.status !== 404) throw new Error("abacus " + r.status);
-  return r;
-}
-async function abHit(key) {
-  let r = await abCall(`/v1/hit/${VIEWS.ns}/${key}`);
-  if (r.status === 404) {
-    await abCall("/v1/create", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ namespace: VIEWS.ns, key }),
-    });
-    r = await abCall(`/v1/hit/${VIEWS.ns}/${key}`);
-  }
-  const j = await r.json();
-  return typeof j.value === "number" ? j.value : null;
-}
-async function abInfo(key) {
+/* counter backend: your Cloudflare Worker (global) — see worker.js.
+   Falls back to per-browser counting when CONFIG.counterApi is empty. */
+async function wapi(path, init) {
+  if (!CONFIG.counterApi) return null;
   try {
-    const r = await abCall(`/v1/info/${VIEWS.ns}/${key}`);
-    if (r.status === 404) return 0;
+    const r = await fetch(CONFIG.counterApi.replace(/\/$/, "") + path, init);
+    if (!r.ok) return null;
     const j = await r.json();
-    return typeof j.value === "number" ? j.value : 0;
+    return typeof j.value === "number" ? j.value : null;
   } catch {
     return null;
   }
+}
+async function abHit(key) {
+  if (key === VIEWS.key) return await wapi("/api/views", { method: "POST" });
+  const m = key.match(/^views-(\d{4}-\d{2}-\d{2})$/);
+  if (m) return await wapi(`/api/day/${m[1]}`, { method: "POST" });
+  return null;
+}
+async function abInfo(key) {
+  if (key === VIEWS.key) {
+    const v = await wapi("/api/views");
+    return v === null ? null : v;
+  }
+  const m = key.match(/^views-(\d{4}-\d{2}-\d{2})$/);
+  if (m) {
+    const v = await wapi(`/api/day/${m[1]}`);
+    return v === null ? 0 : v; // 0 = no data yet (keeps admin graph honest)
+  }
+  return null;
 }
 
 /* live activity card: game art + elapsed, spotify art + moving progress */
