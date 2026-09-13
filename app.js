@@ -50,6 +50,69 @@ $("#uid").addEventListener("click", async () => {
   }
 });
 
+/* live discord presence (lanyard — refreshes every 30s) */
+const LANYARD_URL = "https://api.lanyard.rest/v1/users/1421349735003983925";
+const STATUS_COLORS = { online: "#23a55a", idle: "#f0b232", dnd: "#da373c", offline: "#80848e" };
+
+function esc(s) {
+  return String(s).replace(/[<>&]/g, (c) => ({ "<": "&lt;", ">": "&gt;", "&": "&amp;" }[c]));
+}
+
+function setPresence(status, activity) {
+  const dot = document.querySelector(".status");
+  if (dot) {
+    dot.style.background = STATUS_COLORS[status] || STATUS_COLORS.offline;
+    dot.title = status;
+  }
+  document.body.dataset.status = status;
+  const el = document.getElementById("presence");
+  if (el) {
+    const label = { online: "online", idle: "idle", dnd: "do not disturb", offline: "offline" }[status] || status;
+    const cls = status === "dnd" ? "dnd" : status;
+    el.innerHTML = `<b class="st-${cls}">●</b> ${label}${activity ? ` — ${activity}` : ""}`;
+  }
+}
+
+async function syncPresence() {
+  try {
+    const r = await fetch(LANYARD_URL);
+    const j = await r.json();
+    if (!j.success) return;
+    const d = j.data, u = d.discord_user;
+    document.querySelector(".name").textContent = u.global_name || u.username || CONFIG.name;
+    document.title = u.username || CONFIG.name;
+    if (u.avatar) {
+      const ext = u.avatar.startsWith("a_") ? "gif" : "png";
+      const url = `https://cdn.discordapp.com/avatars/${u.id}/${u.avatar}.${ext}?size=256`;
+      const img = document.getElementById("avatar");
+      if (img && img.src !== url) img.src = url;
+    }
+    const deco = document.getElementById("deco");
+    const asset = u.avatar_decoration_data && u.avatar_decoration_data.asset;
+    if (deco) {
+      if (asset) {
+        deco.src = `https://cdn.discordapp.com/avatar-decoration-presets/${asset}.png?size=256`;
+        deco.style.display = "";
+      } else {
+        deco.style.display = "none";
+      }
+    }
+    let act = "";
+    if (d.listening_to_spotify && d.spotify) act = `${d.spotify.song} — ${d.spotify.artist}`;
+    else {
+      const g = (d.activities || []).find((a) => a.type === 0);
+      if (g) act = g.name;
+    }
+    setPresence(d.discord_status || "offline", act ? esc(act) : "");
+  } catch {
+    /* offline / blocked — static fallback stays */
+  }
+}
+
+setPresence("offline", "");
+syncPresence();
+setInterval(syncPresence, 30000);
+
 /* links */
 const nav = $("#links");
 CONFIG.links.forEach((l) => {
