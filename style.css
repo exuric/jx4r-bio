@@ -65,6 +65,12 @@ body {
     rgba(60, 10, 25, 0.4) 58%, rgba(0, 0, 0, 0.92));
 }
 #snow { position: fixed; inset: 0; z-index: 2; pointer-events: none; }
+#flash {
+  position: fixed; inset: 0; z-index: 40;
+  background: #cfe2ff; opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+}
 
 /* ---------- custom crosshair cursor (desktop only) ---------- */
 @media (hover: hover) and (pointer: fine) {

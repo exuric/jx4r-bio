@@ -261,44 +261,95 @@ function elFallbackCount() {
   })();
 })();
 
-/* snowfall */
+/* heavy rain + distant lightning */
 (() => {
   const c = $("#snow");
   const x = c.getContext("2d");
-  let W, H, flakes = [];
+  const DPR = Math.min(1.5, window.devicePixelRatio || 1);
+  let W, H;
   function size() {
-    W = c.width = innerWidth;
-    H = c.height = innerHeight;
+    W = innerWidth;
+    H = innerHeight;
+    c.width = W * DPR;
+    c.height = H * DPR;
+    c.style.width = W + "px";
+    c.style.height = H + "px";
+    x.setTransform(DPR, 0, 0, DPR, 0, 0);
   }
   size();
   addEventListener("resize", size);
-  const N = Math.min(90, Math.floor(innerWidth / 14));
-  for (let i = 0; i < N; i++) {
-    flakes.push({
-      x: Math.random() * innerWidth,
-      y: Math.random() * innerHeight,
-      r: Math.random() * 2 + 0.5,
-      s: Math.random() * 0.6 + 0.2,
-      o: Math.random() * 0.5 + 0.2,
-      ph: Math.random() * Math.PI * 2,
-    });
+
+  const wind = -1.7; // slant (negative = blows left)
+  function make(far) {
+    return {
+      x: Math.random() * (W + 60) - 30,
+      y: Math.random() * H,
+      len: far ? 8 + Math.random() * 10 : 17 + Math.random() * 24,
+      sp: far ? 8 + Math.random() * 5 : 14 + Math.random() * 10,
+      o: far ? 0.1 + Math.random() * 0.14 : 0.24 + Math.random() * 0.3,
+      w: far ? 0.8 : 1.3,
+    };
   }
-  (function draw(t) {
+  const N = Math.min(230, Math.floor(innerWidth / 6));
+  const drops = [];
+  for (let i = 0; i < N; i++) drops.push(make(i % 3 === 0));
+  const splashes = [];
+
+  function step() {
     x.clearRect(0, 0, W, H);
-    x.fillStyle = "#cfe2ff";
-    flakes.forEach((f) => {
-      f.y += f.s;
-      f.x += Math.sin(t / 1600 + f.ph) * 0.3;
-      if (f.y > H + 5) {
-        f.y = -5;
-        f.x = Math.random() * W;
-      }
-      x.globalAlpha = f.o;
+    x.lineCap = "round";
+    for (const d of drops) {
+      x.strokeStyle = `rgba(174, 194, 255, ${d.o})`;
+      x.lineWidth = d.w;
       x.beginPath();
-      x.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-      x.fill();
-    });
-    x.globalAlpha = 1;
-    requestAnimationFrame(draw);
-  })(0);
+      x.moveTo(d.x, d.y);
+      x.lineTo(d.x - wind * d.len * 0.32, d.y - d.len);
+      x.stroke();
+      d.y += d.sp;
+      d.x += wind;
+      if (d.y > H + 10) {
+        if (Math.random() < 0.22 && splashes.length < 46) {
+          splashes.push({ x: d.x, y: H - 2 - Math.random() * 40, r: 1, a: 0.32 });
+        }
+        d.y = -20;
+        d.x = Math.random() * (W + 60) - 30;
+      }
+    }
+    for (let i = splashes.length - 1; i >= 0; i--) {
+      const s = splashes[i];
+      s.r += 1;
+      s.a -= 0.028;
+      if (s.a <= 0) {
+        splashes.splice(i, 1);
+        continue;
+      }
+      x.strokeStyle = `rgba(174, 194, 255, ${s.a})`;
+      x.lineWidth = 1;
+      x.beginPath();
+      x.ellipse(s.x, s.y, s.r * 1.9, s.r * 0.62, 0, 0, Math.PI * 2);
+      x.stroke();
+    }
+    requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+
+  // distant lightning: soft flickers every 9-23s
+  const flash = document.getElementById("flash");
+  (function bolt() {
+    setTimeout(() => {
+      if (flash && !document.hidden) {
+        let n = 2 + Math.floor(Math.random() * 2);
+        const flick = () => {
+          if (n-- <= 0) return;
+          flash.style.opacity = (0.08 + Math.random() * 0.1).toFixed(2);
+          setTimeout(() => {
+            flash.style.opacity = 0;
+            setTimeout(flick, 60 + Math.random() * 130);
+          }, 70 + Math.random() * 100);
+        };
+        flick();
+      }
+      bolt();
+    }, 9000 + Math.random() * 14000);
+  })();
 })();
