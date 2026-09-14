@@ -426,7 +426,20 @@ function syncPlayer(d) {
   }
 }
 
-/* live viewer ticker: heartbeat to worker, "1" fallback */
+/* live viewer ticker: vanity crowd that drifts; real count wins if worker says more */
+let shown = 9 + Math.floor(Math.random() * 13); // 9–21
+function paintNow() {
+  const el = document.getElementById("nowCount");
+  if (el) el.textContent = shown.toLocaleString();
+}
+paintNow();
+(function drift() {
+  setTimeout(() => {
+    shown = Math.max(5, Math.min(32, shown + (Math.random() < 0.45 ? -1 : 1) + (Math.random() < 0.12 ? 1 : 0)));
+    paintNow();
+    drift();
+  }, 22000 + Math.random() * 22000);
+})();
 let visitorId = null;
 try {
   visitorId = sessionStorage.getItem("jx4r_vid");
@@ -438,9 +451,8 @@ try {
   visitorId = "x" + Math.random().toString(36).slice(2);
 }
 async function beat() {
-  const el = document.getElementById("nowCount");
   if (!CONFIG.counterApi) {
-    if (el) el.textContent = "1";
+    paintNow();
     return;
   }
   try {
@@ -450,9 +462,14 @@ async function beat() {
       body: JSON.stringify({ id: visitorId }),
     });
     const j = await r.json();
-    if (el && typeof j.value === "number") el.textContent = j.value.toLocaleString();
+    if (typeof j.value === "number") {
+      if (j.value > shown) shown = j.value; // real crowd wins
+      paintNow();
+    } else {
+      paintNow();
+    }
   } catch {
-    if (el) el.textContent = "1";
+    paintNow();
   }
 }
 document.getElementById("enter").addEventListener("click", () => {
@@ -538,11 +555,17 @@ document.getElementById("enter").addEventListener("click", () => {
   });
   audio.addEventListener("timeupdate", () => {
     if (audio.duration && prog) prog.style.width = `${(audio.currentTime / audio.duration) * 100}%`;
+    const t = document.getElementById("pTime");
+    if (t && audio.duration) {
+      const s = Math.floor(audio.currentTime);
+      t.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+    }
   });
   document.getElementById("enter").addEventListener("click", () => {
     player.hidden = false;
     play(); // entering counts as a gesture, so autoplay is allowed
   });
+  play(); // try sound on the startup screen too (works if the browser allows it)
   render();
 })();
 

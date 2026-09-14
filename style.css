@@ -47,11 +47,17 @@ body {
   font-size: clamp(58px, 15vw, 116px);
   line-height: 1;
   letter-spacing: 0.04em;
-  background: linear-gradient(180deg, #ffffff 30%, #9aa3b5 75%, #5b6270);
+  background: linear-gradient(110deg, #8a93a8 20%, #ffffff 38%, #ffffff 42%, #8a93a8 60%);
+  background-size: 220% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   filter: drop-shadow(0 6px 30px rgba(0, 0, 0, 0.8));
+  animation: shine 5s ease-in-out infinite;
+}
+@keyframes shine {
+  0%, 100% { background-position: 110% 0; }
+  50% { background-position: -10% 0; }
 }
 .enter-title .red { color: #e04863; -webkit-text-fill-color: #e04863; filter: none; }
 .enter-hint {
@@ -82,6 +88,13 @@ body {
   background: #cfe2ff; opacity: 0;
   pointer-events: none;
   transition: opacity 0.12s ease;
+}
+
+/* cinematic vignette */
+.vignette {
+  position: fixed; inset: 0; z-index: 3;
+  pointer-events: none;
+  background: radial-gradient(120% 90% at 50% 45%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
 }
 
 /* ---------- custom crosshair cursor (desktop only) ---------- */
@@ -280,7 +293,10 @@ body[data-status="offline"] { --ring: #4a5064; }
   border-color: rgba(255, 255, 255, 0.55);
   box-shadow: 0 8px 28px rgba(255, 255, 255, 0.12);
 }
-.link svg { flex: none; display: block; }
+.link svg { flex: none; display: block; transition: transform 0.15s ease; }
+.link:hover svg { transform: scale(1.15); }
+.link .go { margin-left: auto; color: var(--dim); font-size: 18px; transition: transform 0.15s ease, color 0.15s ease; }
+.link:hover .go { color: #fff; transform: translateX(3px); }
 .link .go { margin-left: auto; color: var(--dim); font-size: 18px; }
 .link:hover .go { color: var(--blue-hi); }
 
