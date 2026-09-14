@@ -4,13 +4,19 @@ const CONFIG = {
   uid: "1421349735003983925",
   adminKey: "jx4r", // open yoursite/?admin=jx4r for the private view graph
   counterApi: "", // global counts: paste your worker URL, e.g. https://jx4r-bio.YOU.workers.dev (see worker.js). empty = per-browser counts.
-  typing: ["my corner of the internet", "discord.gg/...", "est. 2026"],
+  typing: ["my corner of the internet", "discord.gg/larp", "est. 2026"],
   links: [
     {
       label: "Discord",
       sub: "open in discord",
       icon: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="#5c94ff" d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.319 13.58.099 18.058a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.363 1.225 1.993a.076.076 0 0 0 .084.029 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>',
       action: "https://discord.com/users/1421349735003983925",
+    },
+    {
+      label: "LARP V4",
+      sub: "discord.gg/larp",
+      icon: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#9fd0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+      action: "https://discord.gg/larp",
     },
     {
       label: "Share this page",
@@ -77,7 +83,7 @@ function setPresence(status, activity) {
   if (el) {
     const label = { online: "online", idle: "idle", dnd: "do not disturb", offline: "offline" }[status] || status;
     const cls = status === "dnd" ? "dnd" : status;
-    el.innerHTML = `<b class="st-${cls}">●</b> ${label}${activity ? ` — ${activity}` : ""}`;
+    el.innerHTML = `<b class="st-${cls}">●</b> ${label}${activity ? ` • ${activity}` : ""}`;
   }
 }
 
@@ -117,10 +123,10 @@ async function syncPresence() {
       }
       act = `${emo}${esc(custom.state || "")}`.trim();
     } else if (d.listening_to_spotify && d.spotify) {
-      act = esc(`${d.spotify.song} — ${d.spotify.artist}`);
+      act = esc(`${d.spotify.song} • ${d.spotify.artist}`);
     } else {
       const g = acts.find((a) => a.type === 0);
-      if (g) act = esc(g.details ? `${g.name} — ${g.details}` : g.name);
+      if (g) act = esc(g.details ? `${g.name} • ${g.details}` : g.name);
     }
     setPresence(d.discord_status || "offline", act);
     renderActivity(d);
@@ -296,7 +302,7 @@ function renderActivity(d) {
     art.style.display = "";
     type.textContent = "listening to spotify";
     nm.textContent = s.song;
-    det.textContent = `${s.artist} — ${s.album}`;
+      det.textContent = `${s.artist} • ${s.album}`;
     actMode = "prog";
     actStart = ts.start;
     actEnd = ts.end;
@@ -312,7 +318,7 @@ function renderActivity(d) {
       }
       type.textContent = "playing";
       nm.textContent = g.name;
-      det.textContent = [g.details, g.state].filter(Boolean).join(" — ");
+      det.textContent = [g.details, g.state].filter(Boolean).join(" • ");
       actMode = "elapsed";
       actStart = (g.timestamps && g.timestamps.start) || Date.now();
       actEnd = 0;
@@ -429,8 +435,8 @@ renderAdmin();
   (function loop() {
     rx += (mx - rx) * 0.16;
     ry += (my - ry) * 0.16;
-    dot.style.transform = `translate(${mx - 11}px, ${my - 11}px)`;
-    ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
+    dot.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
+    ring.style.transform = `translate(${rx - 17}px, ${ry - 17}px)`;
     requestAnimationFrame(loop);
   })();
 })();
@@ -476,6 +482,77 @@ renderAdmin();
   document.getElementById("enter").addEventListener("click", () => {
     player.hidden = false;
     play(); // entering counts as a gesture, so autoplay is allowed
+  });
+  render();
+})();
+
+/* procedural rain sound (filtered noise, no audio file needed) */
+(() => {
+  const btn = document.getElementById("snd");
+  if (!btn) return;
+  const ON = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19" fill="currentColor" stroke="none"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.6 5.4a9 9 0 0 1 0 13.2"/></svg>';
+  const OFF = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19" fill="currentColor" stroke="none"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+  let ctx = null, gain = null, on = false;
+  function build() {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return false;
+    ctx = new AC();
+    const len = 2 * ctx.sampleRate;
+    const buf = ctx.createBuffer(2, len, ctx.sampleRate);
+    for (let ch = 0; ch < 2; ch++) {
+      const d = buf.getChannelData(ch);
+      let last = 0;
+      for (let i = 0; i < len; i++) {
+        const w = Math.random() * 2 - 1;
+        last = (last + 0.02 * w) / 1.02; // pink-ish
+        d[i] = last * 3.4;
+      }
+    }
+    const src = ctx.createBufferSource();
+    src.buffer = buf;
+    src.loop = true;
+    const lp = ctx.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.value = 1500;
+    const hp = ctx.createBiquadFilter();
+    hp.type = "highpass";
+    hp.frequency.value = 250;
+    gain = ctx.createGain();
+    gain.gain.value = 0;
+    src.connect(lp);
+    lp.connect(hp);
+    hp.connect(gain);
+    gain.connect(ctx.destination);
+    src.start();
+    return true;
+  }
+  function fade(to) {
+    if (!ctx || !gain) return;
+    gain.gain.cancelScheduledValues(ctx.currentTime);
+    gain.gain.setValueAtTime(gain.gain.value, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(to, ctx.currentTime + 1.2);
+  }
+  function render() {
+    btn.innerHTML = on ? ON : OFF;
+    btn.classList.toggle("off", !on);
+  }
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (!ctx && !build()) return;
+    ctx.resume();
+    on = !on;
+    fade(on ? 0.055 : 0);
+    render();
+  });
+  document.getElementById("enter").addEventListener("click", () => {
+    if (!ctx) build();
+    if (!ctx) return;
+    ctx.resume();
+    if (!on) {
+      on = true;
+      fade(0.055);
+      render();
+    }
   });
   render();
 })();

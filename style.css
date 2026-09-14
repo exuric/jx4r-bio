@@ -80,19 +80,40 @@ body {
 @media (hover: hover) and (pointer: fine) {
   .cursor, .cursor-ring { display: block; }
 }
-.cursor { width: 22px; height: 22px; }
-.cursor::before, .cursor::after {
-  content: ""; position: absolute;
-  background: #9fd0ff;
-  box-shadow: 0 0 8px rgba(92, 148, 255, 0.9);
-}
-.cursor::before { left: 50%; top: 0; width: 2px; height: 100%; transform: translateX(-50%); }
-.cursor::after { top: 50%; left: 0; height: 2px; width: 100%; transform: translateY(-50%); }
+.cursor { width: 8px; height: 8px; border-radius: 50%; background: #e6f1ff; box-shadow: 0 0 10px rgba(159, 208, 255, 0.9), 0 0 26px rgba(92, 148, 255, 0.55); }
 .cursor-ring {
-  width: 36px; height: 36px;
-  border: 1px solid rgba(159, 208, 255, 0.6);
+  width: 34px; height: 34px;
+  border: 1px solid rgba(159, 208, 255, 0.5);
   border-radius: 50%;
+  box-shadow: 0 0 16px rgba(92, 148, 255, 0.25);
 }
+/* drifting fog so the rain has atmosphere */
+.fog {
+  position: fixed; inset: -10%; z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 30% at 28% 72%, rgba(130, 160, 210, 0.08), transparent 70%),
+    radial-gradient(36% 26% at 72% 62%, rgba(130, 160, 210, 0.07), transparent 70%);
+  animation: fogdrift 26s ease-in-out infinite alternate;
+}
+@keyframes fogdrift {
+  from { transform: translateX(-3%); }
+  to { transform: translateX(3%) translateY(-2%); }
+}
+/* rain sound toggle */
+.snd {
+  position: fixed; right: 14px; bottom: 14px; z-index: 46;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: rgba(10, 16, 28, 0.6);
+  backdrop-filter: blur(12px);
+  color: #9fd0ff;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0;
+}
+.snd svg { display: block; }
+.snd.off { color: var(--dim); }
 
 /* ---------- card ---------- */
 .wrap {
