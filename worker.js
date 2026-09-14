@@ -15,6 +15,9 @@
 //   POST /api/views        -> {value}  (total + 1)
 //   GET  /api/day/2026-09-13 -> {value}
 //   POST /api/day/2026-09-13 -> {value} (that day + 1)
+//   POST /api/beat {id}    -> {value}  (live viewers right now)
+//   GET  /api/now           -> {value}  (live viewers right now)
+// (presence keys auto-expire after 90s, so "now" means active tabs)
 
 const CORS = {
   "access-control-allow-origin": "*",
@@ -59,6 +62,21 @@ export default {
         return json(n);
       }
       return json(await getNum(KV, k, 0));
+    }
+
+    if (u.pathname === "/api/beat" && req.method === "POST") {
+      let id = "";
+      try {
+        id = String((await req.json()).id || "").slice(0, 64);
+      } catch { /* ignore */ }
+      if (id) await KV.put("here:" + id, "1", { expirationTtl: 90 });
+      const list = await KV.list({ prefix: "here:" });
+      return json(list.keys.length);
+    }
+
+    if (u.pathname === "/api/now") {
+      const list = await KV.list({ prefix: "here:" });
+      return json(list.keys.length);
     }
 
     return new Response("jx4r-bio counter: use /api/views or /api/day/YYYY-MM-DD", {

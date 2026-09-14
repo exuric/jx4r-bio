@@ -19,7 +19,9 @@
 <!-- click to enter -->
 <div id="enter">
   <div class="enter-box">
-    <div class="enter-btn">click to enter</div>
+    <div class="enter-kicker">EST. 2026</div>
+    <div class="enter-title">JX4R<span class="red">.</span></div>
+    <div class="enter-hint"><span class="rule"></span>click anywhere to enter<span class="rule"></span></div>
   </div>
 </div>
 
@@ -80,6 +82,8 @@
     </div>
   </div>
 
+  <div class="live" id="live"><span class="livedot"></span><b id="nowCount">1</b>&nbsp;viewing now</div>
+
 </main>
 
 <section id="admin" class="admin" hidden>
@@ -92,8 +96,8 @@
 <div class="player" id="player" hidden>
   <img id="pArt" src="https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/34/e5/46/34e546b6-94c9-960e-cd35-4f35ffcd6860/19UMGIM71794.rgb.jpg/600x600bb.jpg" alt="Trust Issues cover" />
   <div class="p-info">
-    <div class="p-song">Trust Issues</div>
-    <div class="p-artist">Drake • Care Package</div>
+    <div class="p-song"><span id="pSong">Trust Issues</span> <span class="plive" id="pLive" hidden>live</span></div>
+    <div class="p-artist" id="pArtist">Drake • Care Package</div>
     <div class="bar pbar"><div id="pProg"></div></div>
   </div>
   <button class="p-toggle" id="pToggle" aria-label="play or pause"></button>

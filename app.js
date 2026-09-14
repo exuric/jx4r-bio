@@ -9,19 +9,19 @@ const CONFIG = {
     {
       label: "Discord",
       sub: "open in discord",
-      icon: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="#5c94ff" d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.319 13.58.099 18.058a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.363 1.225 1.993a.076.076 0 0 0 .084.029 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>',
+      icon: '<svg viewBox="0 0 24 24" width="20" height="20"><path fill="#e8edf5" d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.865-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.319 13.58.099 18.058a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128c.126-.094.252-.192.372-.291a.074.074 0 0 1 .078-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.363 1.225 1.993a.076.076 0 0 0 .084.029 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.055c.5-5.177-.838-9.674-3.549-13.66a.06.06 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>',
       action: "https://discord.com/users/1421349735003983925",
     },
     {
       label: "LARP V4",
       sub: "discord.gg/larp",
-      icon: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#9fd0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
+      icon: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#cfd8ea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>',
       action: "https://discord.gg/larp",
     },
     {
       label: "Share this page",
       sub: "copy link",
-      icon: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#9fd0ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>',
+      icon: '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#cfd8ea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>',
       action: "share",
     },
   ],
@@ -130,6 +130,7 @@ async function syncPresence() {
     }
     setPresence(d.discord_status || "offline", act);
     renderActivity(d);
+    syncPlayer(d);
   } catch {
     /* offline / blocked — static fallback stays */
   }
@@ -400,6 +401,65 @@ async function renderAdmin() {
 }
 renderAdmin();
 
+/* player follows your live Spotify track (art + title); Drake when idle */
+const HOUSE_TRACK = {
+  song: "Trust Issues",
+  artist: "Drake • Care Package",
+  art: "https://is1-ssl.mzstatic.com/image/thumb/Music123/v4/34/e5/46/34e546b6-94c9-960e-cd35-4f35ffcd6860/19UMGIM71794.rgb.jpg/600x600bb.jpg",
+};
+function syncPlayer(d) {
+  const song = document.getElementById("pSong");
+  const artist = document.getElementById("pArtist");
+  const art = document.getElementById("pArt");
+  const live = document.getElementById("pLive");
+  if (!song || !artist || !art) return;
+  if (d && d.listening_to_spotify && d.spotify) {
+    song.textContent = d.spotify.song;
+    artist.textContent = `${d.spotify.artist} • ${d.spotify.album}`;
+    if (art.src !== d.spotify.album_art_url) art.src = d.spotify.album_art_url;
+    if (live) live.hidden = false;
+  } else {
+    song.textContent = HOUSE_TRACK.song;
+    artist.textContent = HOUSE_TRACK.artist;
+    if (!art.src.endsWith("19UMGIM71794.rgb.jpg/600x600bb.jpg")) art.src = HOUSE_TRACK.art;
+    if (live) live.hidden = true;
+  }
+}
+
+/* live viewer ticker: heartbeat to worker, "1" fallback */
+let visitorId = null;
+try {
+  visitorId = sessionStorage.getItem("jx4r_vid");
+  if (!visitorId) {
+    visitorId = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    sessionStorage.setItem("jx4r_vid", visitorId);
+  }
+} catch {
+  visitorId = "x" + Math.random().toString(36).slice(2);
+}
+async function beat() {
+  const el = document.getElementById("nowCount");
+  if (!CONFIG.counterApi) {
+    if (el) el.textContent = "1";
+    return;
+  }
+  try {
+    const r = await fetch(CONFIG.counterApi.replace(/\/$/, "") + "/api/beat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id: visitorId }),
+    });
+    const j = await r.json();
+    if (el && typeof j.value === "number") el.textContent = j.value.toLocaleString();
+  } catch {
+    if (el) el.textContent = "1";
+  }
+}
+document.getElementById("enter").addEventListener("click", () => {
+  beat();
+  setInterval(beat, 30000);
+});
+
 /* 3D tilt + spotlight (guns.lol-style interactivity) */
 (() => {
   const card = document.querySelector(".card");
@@ -557,7 +617,7 @@ renderAdmin();
   render();
 })();
 
-/* heavy rain + distant lightning */
+/* storm: gusting wind, 3 depth layers, bouncing droplets, ripples, lightning */
 (() => {
   const c = $("#snow");
   const x = c.getContext("2d");
@@ -575,56 +635,92 @@ renderAdmin();
   size();
   addEventListener("resize", size);
 
-  const wind = -1.7; // slant (negative = blows left)
-  function make(far) {
-    return {
-      x: Math.random() * (W + 60) - 30,
+  // kind: 0 far veil, 1 mid rain, 2 near giants (big, blurred, fast)
+  function make(kind) {
+    const base = {
+      x: Math.random() * (W + 80) - 40,
       y: Math.random() * H,
-      len: far ? 8 + Math.random() * 10 : 17 + Math.random() * 24,
-      sp: far ? 8 + Math.random() * 5 : 14 + Math.random() * 10,
-      o: far ? 0.1 + Math.random() * 0.14 : 0.24 + Math.random() * 0.3,
-      w: far ? 0.8 : 1.3,
+      kind,
     };
+    if (kind === 0) return { ...base, len: 7 + Math.random() * 9, sp: 7 + Math.random() * 5, o: 0.08 + Math.random() * 0.12, w: 0.8 };
+    if (kind === 2) return { ...base, len: 34 + Math.random() * 26, sp: 24 + Math.random() * 12, o: 0.08 + Math.random() * 0.09, w: 2.1 };
+    return { ...base, len: 15 + Math.random() * 22, sp: 13 + Math.random() * 9, o: 0.22 + Math.random() * 0.3, w: 1.2 };
   }
-  const N = Math.min(230, Math.floor(innerWidth / 6));
+  const N = Math.min(260, Math.floor(innerWidth / 5.5));
   const drops = [];
-  for (let i = 0; i < N; i++) drops.push(make(i % 3 === 0));
-  const splashes = [];
+  for (let i = 0; i < N; i++) drops.push(make(i % 10 < 3 ? 0 : i % 10 < 8 ? 1 : 2));
+  const ripples = [];
+  const spray = [];
 
-  function step() {
+  function groundHit(d) {
+    if (d.kind === 2) return; // giants dissolve into the dark
+    if (Math.random() < 0.24 && ripples.length < 42) {
+      ripples.push({ x: d.x, y: H - 2 - Math.random() * 46, r: 1, a: 0.3 });
+    }
+    if (d.kind === 1 && Math.random() < 0.5 && spray.length < 90) {
+      for (let k = 0; k < 2; k++) {
+        spray.push({
+          x: d.x, y: H - 3,
+          vx: (Math.random() - 0.5) * 2.4, vy: -(1.2 + Math.random() * 2.4),
+          a: 0.5,
+        });
+      }
+    }
+  }
+
+  function step(t) {
+    // gusting wind: slow swells + fast shivers
+    const wind = -1.7 + Math.sin(t / 4200) * 1.3 + Math.sin(t / 900) * 0.45;
     x.clearRect(0, 0, W, H);
     x.lineCap = "round";
+
     for (const d of drops) {
-      x.strokeStyle = `rgba(174, 194, 255, ${d.o})`;
+      const sway = d.kind === 2 ? wind * 1.6 : wind;
+      x.strokeStyle = `rgba(208, 216, 232, ${d.o})`;
       x.lineWidth = d.w;
       x.beginPath();
       x.moveTo(d.x, d.y);
-      x.lineTo(d.x - wind * d.len * 0.32, d.y - d.len);
+      x.lineTo(d.x - sway * d.len * 0.3, d.y - d.len);
       x.stroke();
-      d.y += d.sp;
-      d.x += wind;
-      if (d.y > H + 10) {
-        if (Math.random() < 0.22 && splashes.length < 46) {
-          splashes.push({ x: d.x, y: H - 2 - Math.random() * 40, r: 1, a: 0.32 });
-        }
-        d.y = -20;
-        d.x = Math.random() * (W + 60) - 30;
+      d.y += d.sp * (1 + Math.abs(wind) * 0.08);
+      d.x += sway;
+      if (d.y > H + 12) {
+        groundHit(d);
+        Object.assign(d, make(d.kind), { y: -24, x: Math.random() * (W + 80) - 40 });
       }
     }
-    for (let i = splashes.length - 1; i >= 0; i--) {
-      const s = splashes[i];
-      s.r += 1;
-      s.a -= 0.028;
+
+    for (let i = ripples.length - 1; i >= 0; i--) {
+      const s = ripples[i];
+      s.r += 1.1;
+      s.a -= 0.026;
       if (s.a <= 0) {
-        splashes.splice(i, 1);
+        ripples.splice(i, 1);
         continue;
       }
-      x.strokeStyle = `rgba(174, 194, 255, ${s.a})`;
+      x.strokeStyle = `rgba(208, 216, 232, ${s.a})`;
       x.lineWidth = 1;
       x.beginPath();
-      x.ellipse(s.x, s.y, s.r * 1.9, s.r * 0.62, 0, 0, Math.PI * 2);
+      x.ellipse(s.x, s.y, s.r * 1.9, s.r * 0.6, 0, 0, Math.PI * 2);
       x.stroke();
     }
+
+    x.fillStyle = "rgba(215, 222, 236, 1)";
+    for (let i = spray.length - 1; i >= 0; i--) {
+      const p = spray[i];
+      p.vy += 0.32;
+      p.x += p.vx + wind * 0.4;
+      p.y += p.vy;
+      p.a -= 0.03;
+      if (p.a <= 0 || p.y > H) {
+        spray.splice(i, 1);
+        continue;
+      }
+      x.globalAlpha = Math.max(0, p.a);
+      x.fillRect(p.x, p.y, 1.6, 1.6);
+    }
+    x.globalAlpha = 1;
+
     requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
